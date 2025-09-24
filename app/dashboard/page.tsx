@@ -3,7 +3,6 @@ import { logtoConfig } from '@/lib/logto';
 import { redirect } from 'next/navigation';
 import { syncUserWithSupabase, getUserProfile } from '@/lib/user-sync';
 import SignOutButton from './sign-out-button';
-import TeamDashboard from './team-dashboard';
 
 export default async function DashboardPage() {
   const { isAuthenticated, claims } = await getLogtoContext(logtoConfig);
@@ -36,9 +35,9 @@ export default async function DashboardPage() {
                 <p className="text-gray-600 dark:text-gray-300 mt-1">
                   Bienvenido, {claims?.name || claims?.email || 'Usuario'}
                 </p>
-                {userProfile?.teams && (
+                {userProfile && 'teams' in userProfile && userProfile.teams && (
                   <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
-                    Equipo: {userProfile.teams.name}
+                    Equipo: {(userProfile.teams as any).name}
                   </p>
                 )}
               </div>
@@ -57,10 +56,37 @@ export default async function DashboardPage() {
 
           {/* Dashboard personalizado por equipo */}
           {userProfile?.team_id ? (
-            <TeamDashboard
-              teamId={userProfile.team_id}
-              userProfile={userProfile}
-            />
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Dashboard del Equipo
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg p-4">
+                  <h3 className="font-semibold text-blue-800 dark:text-blue-200">Progreso</h3>
+                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">75%</p>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">Completado</p>
+                </div>
+                <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-lg p-4">
+                  <h3 className="font-semibold text-green-800 dark:text-green-200">Recursos</h3>
+                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">12</p>
+                  <p className="text-sm text-green-600 dark:text-green-400">Disponibles</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg p-4">
+                  <h3 className="font-semibold text-purple-800 dark:text-purple-200">Actividad</h3>
+                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">8</p>
+                  <p className="text-sm text-purple-600 dark:text-purple-400">Esta semana</p>
+                </div>
+              </div>
+
+              <div className="mt-6 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <h3 className="font-medium text-gray-900 dark:text-white mb-2">Información del perfil:</h3>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <p><strong>Team ID:</strong> {userProfile.team_id}</p>
+                  <p><strong>Rol:</strong> {userProfile.role || 'Sin definir'}</p>
+                  <p><strong>Miembro desde:</strong> {new Date(userProfile.created_at).toLocaleDateString('es-ES')}</p>
+                </div>
+              </div>
+            </div>
           ) : (
             // Vista por defecto si no tiene equipo
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center">

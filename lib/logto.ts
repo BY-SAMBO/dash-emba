@@ -1,5 +1,4 @@
 import { LogtoNextConfig, UserScope } from '@logto/next';
-import LogtoClient from '@logto/next/client';
 
 export const logtoConfig: LogtoNextConfig = {
   endpoint: process.env.LOGTO_ENDPOINT || 'https://logto-ag0gcw0swwkg088ssocw4g80.industriasgalgo.com/oidc',
@@ -16,7 +15,7 @@ export const logtoConfig: LogtoNextConfig = {
   ],
 };
 
-export const logtoClient = new LogtoClient(logtoConfig);
+// Removed LogtoClient - not needed for server-side operations
 
 export interface UserInfo {
   sub: string;

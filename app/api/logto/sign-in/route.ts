@@ -1,13 +1,11 @@
 import { redirect } from 'next/navigation';
-import { handleSignIn } from '@logto/next/server-actions';
 import { NextRequest } from 'next/server';
-import { logtoConfig } from '@/lib/logto';
 
 export async function GET(request: NextRequest) {
   const returnTo = request.nextUrl.searchParams.get('returnTo') || '/dashboard';
 
-  return await handleSignIn({
-    ...logtoConfig,
-    returnTo,
-  });
+  // Simple redirect to Logto authorization endpoint
+  const authUrl = `https://logto-ag0gcw0swwkg088ssocw4g80.industriasgalgo.com/oidc/auth?client_id=w5kas9wezygqk269zu7hy&redirect_uri=${encodeURIComponent('https://emba.industriasgalgo.com/callback')}&response_type=code&scope=openid%20profile%20email%20custom_data&state=${encodeURIComponent(returnTo)}`;
+
+  redirect(authUrl);
 }

@@ -1,4 +1,4 @@
-import { supabaseAdmin, UserProfile, DashboardWidget, CourseContent } from '@/lib/supabase';
+import { supabaseAdmin, UserProfile, DashboardWidget as DashboardWidgetType, CourseContent } from '@/lib/supabase';
 import DashboardWidget from './dashboard-widget';
 
 interface TeamDashboardProps {
@@ -13,7 +13,7 @@ interface TeamDashboardProps {
   };
 }
 
-async function getTeamWidgets(teamId: string): Promise<DashboardWidget[]> {
+async function getTeamWidgets(teamId: string): Promise<DashboardWidgetType[]> {
   const { data, error } = await supabaseAdmin
     .from('dashboard_widgets')
     .select('*')

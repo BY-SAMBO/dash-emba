@@ -28,7 +28,7 @@ export async function syncUserWithSupabase(claims: LogtoUserClaims): Promise<Use
     .from('user_profiles')
     .select('*')
     .eq('logto_user_id', claims.sub)
-    .single();
+    .maybeSingle();
 
   if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 = no rows returned
     throw new Error(`Error fetching user: ${fetchError.message}`);
@@ -87,7 +87,7 @@ async function findOrCreateTeam(teamName: string): Promise<string> {
     .from('teams')
     .select('id')
     .eq('name', teamName)
-    .single();
+    .maybeSingle();
 
   if (existingTeam) {
     return existingTeam.id;
@@ -201,7 +201,7 @@ export async function getUserProfile(logtoUserId: string): Promise<UserProfile |
       )
     `)
     .eq('logto_user_id', logtoUserId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     if (error.code === 'PGRST116') {
