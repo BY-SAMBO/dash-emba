@@ -25,11 +25,11 @@ export default async function DashboardPage() {
                 <p className="text-gray-600 dark:text-gray-300 mt-1">
                   Bienvenido, {userInfo?.name || claims?.name || userInfo?.email || 'Usuario'}
                 </p>
-                {claims?.custom_data && typeof claims.custom_data === 'object' && 'team' in claims.custom_data && (
+                {claims?.custom_data && typeof claims.custom_data === 'object' && 'team' in claims.custom_data ? (
                   <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
                     Equipo: {String((claims.custom_data as any).team)}
                   </p>
-                )}
+                ) : null}
               </div>
               <div className="flex items-center space-x-4">
                 {userInfo?.picture && (
@@ -70,7 +70,7 @@ export default async function DashboardPage() {
                 </div>
               </div>
               <div className="space-y-3">
-                {claims?.custom_data && (
+                {claims?.custom_data ? (
                   <div>
                     <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Datos Personalizados:</span>
                     <div className="mt-2 bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
@@ -86,7 +86,7 @@ export default async function DashboardPage() {
                       ))}
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
