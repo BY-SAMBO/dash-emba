@@ -1,8 +1,16 @@
 'use client';
 
-export default function SignOutButton() {
-  const handleSignOut = () => {
-    window.location.href = '/api/logto/sign-out';
+type Props = {
+  onSignOut: () => Promise<void>;
+};
+
+const SignOut = ({ onSignOut }: Props) => {
+  const handleSignOut = async () => {
+    try {
+      await onSignOut();
+    } catch (error) {
+      console.error('Sign-out error:', error);
+    }
   };
 
   return (
@@ -23,7 +31,9 @@ export default function SignOutButton() {
           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
         />
       </svg>
-      <span>Salir</span>
+      <span>Cerrar Sesión</span>
     </button>
   );
-}
+};
+
+export default SignOut;

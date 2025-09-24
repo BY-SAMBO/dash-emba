@@ -1,9 +1,16 @@
 'use client';
 
-export default function SignInButton({ returnTo }: { returnTo: string }) {
-  const handleSignIn = () => {
-    const url = `/api/logto/sign-in?returnTo=${encodeURIComponent(returnTo)}`;
-    window.location.href = url;
+type Props = {
+  onSignIn: () => Promise<void>;
+};
+
+const SignIn = ({ onSignIn }: Props) => {
+  const handleSignIn = async () => {
+    try {
+      await onSignIn();
+    } catch (error) {
+      console.error('Sign-in error:', error);
+    }
   };
 
   return (
@@ -27,4 +34,6 @@ export default function SignInButton({ returnTo }: { returnTo: string }) {
       <span>Iniciar Sesión con Logto</span>
     </button>
   );
-}
+};
+
+export default SignIn;

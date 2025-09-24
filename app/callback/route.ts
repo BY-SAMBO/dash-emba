@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     await handleSignIn(logtoConfig, searchParams);
     redirect('/dashboard');
   } catch (error) {
-    console.error('Callback error:', error);
-    redirect('/login?error=callback_failed');
+    console.error('Sign-in callback error:', error);
+    redirect('/?error=callback-failed');
   }
 }
